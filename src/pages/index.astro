@@ -1,0 +1,397 @@
+---
+import Base from '../layouts/Base.astro';
+import ListingCard from '../components/ListingCard.astro';
+import InternalLinks from '../components/InternalLinks.astro';
+import OwnerCTA from '../components/OwnerCTA.astro';
+import CategoryNav from '../components/CategoryNav.astro';
+import NetworkLinks from '../components/NetworkLinks.astro';
+
+// Safe fetch helper for build-time API calls
+async function safeFetchJson(url: string): Promise<any[]> {
+    try {
+        console.log('Fetching:', url);
+        const res = await fetch(url, {
+            headers: { 
+                'Accept': 'application/json',
+                'User-Agent': 'ErotikMaps-Satellite-Builder/1.0',
+                'X-Satellite-Build': 'true'
+            }
+        });
+        
+        if (!res.ok) {
+            console.error('API returned ' + res.status + ': ' + res.statusText);
+            return [];
+        }
+        
+        const ct = res.headers.get('content-type') || '';
+        if (!ct.includes('application/json')) {
+            console.error('Expected JSON but got: ' + ct);
+            return [];
+        }
+        
+        const data = await res.json();
+        return data.data || [];
+    } catch (error) {
+        console.error('Fetch failed:', error);
+        return [];
+    }
+}
+
+// Fetch listings from API at build time
+const apiUrl = 'https://www.erotikmaps.com/api/v1/satellite/listings?city=dubai&category=erotic-massage&limit=100';
+const listings = await safeFetchJson(apiUrl);
+
+const faq = [{"question":"What is the best Erotic massage in Dubai?","answer":"<p>The pinnacle of <strong>erotic massage in Dubai<\/strong> lies in our 2 verified venues, blending tantric mastery with Arabian luxury. One Marina standout offers ocean-view Nuru sessions with oud-infused oils, perfect for tourists craving waterfront sensuality. The Deira gem excels in prostate and body-to-body rituals, favored by expats for its discreet, high-end vibe. Both prioritize consent, skilled multi-lingual therapists, and post-session teas amid 30°C evenings. Choose based on location—Marina for glamour, Deira for intimacy. Ratings soar for their authentic Dubai fusion of culture and eroticism. (92 words)<\/p>"},{"question":"How much does Erotic massage cost in Dubai?","answer":"<p><strong>Erotic massage in Dubai<\/strong> typically costs 500-1500 AED ($136-$408 USD) for 60-120 minute sessions, reflecting the city's luxury standards. Basic sensual rubs start at 500 AED in Deira spots, while premium Marina parlors with extras like tantric builds or toys hit 1200+ AED. Couples options add 300-500 AED. Prices include oils and privacy, with 100-200 AED tips customary. Pay in cash or card; no haggling per UAE norms. Factor in taxi fares from Dubai Mall areas. Value matches the opulent experience. (87 words)<\/p>"},{"question":"Is Erotic massage legal in United Arab Emirates?","answer":"<p>In the UAE, including Dubai, <strong>erotic massage<\/strong> operates in a grey area—massage therapy is legal and regulated, but explicitly sexual acts are not under Sharia-influenced laws. Reputable venues focus on sensual, non-penetrative wellness to comply, emphasizing privacy and consent. Tourists face deportation risks for violations, so stick to licensed spots avoiding extras. Dubai's expat scene thrives discreetly with police oversight. Research via trusted directories, respect boundaries, and enjoy responsibly amid the multicultural tolerance. Always confirm venue legitimacy. (92 words)<\/p>"},{"question":"What are the best areas for Erotic massage in Dubai?","answer":"<p>Prime spots for <strong>erotic massage Dubai<\/strong> cluster in Dubai Marina and JBR for beachside luxury with yacht views, ideal for tourists post-Palm Jumeirah sunsets. Deira and Bur Dubai offer authentic, budget-friendly discretion near gold souks and historic lanes, suiting explorers. DIFC attracts execs with sleek, corporate-adjacent parlors. Avoid tourist traps in Downtown; opt for these vetted zones where Arabic-English fluency and air-conditioned escapes from 40°C heat enhance the mood. Our 2 listings shine here. (85 words)<\/p>"},{"question":"What should I know before visiting a Erotic massage venue in Dubai?","answer":"<p>Before indulging in <strong>erotic massage in Dubai<\/strong>, shower fresh due to humid weather, arrive 10 minutes early, and dress smart-casual—no shorts or beachwear. Communicate desires clearly in English; use safe words for comfort. Silence phones, tip generously in AED, and respect no-photo rules for privacy. Hydrate against desert climate, book via verified sites to dodge fakes. Women welcome in couples sessions. Embrace the hospitable vibe—therapists offer dates or qahwa. Exit refreshed for Dubai's neon nights. (88 words)<\/p>"}];
+const canonicalUrl = 'https://dubaieroticmassage.vip/';
+
+// HTML content from AI (stored as variables for set:html)
+const introHtml = `<p>Amid the towering Burj Khalifa and the golden sands of Jumeirah Beach, <strong>erotic massage in Dubai</strong> offers a tantalizing escape from the city's relentless pursuit of luxury. Dubai, where Bedouin heritage meets futuristic opulence, has carved a discreet niche for intimate wellness experiences that blend Arabian hospitality with modern sensuality. Visitors flock here not just for tax-free shopping at Dubai Mall, but for private sessions that awaken the senses under the warm desert sun.</p><p>What sets <strong>erotic massage Dubai</strong> apart is its fusion of cultural subtlety and bold indulgence. In a city governed by Islamic traditions yet buzzing with international flair, these venues provide a respectful, high-end sanctuary. Expect skilled therapists trained in tantric techniques, infused with hints of oud-scented oils reminiscent of souk spices. Neighborhoods like Deira and Bur Dubai host hidden gems, while JBR and Dubai Marina cater to upscale tourists seeking waterfront discretion.</p><p>Dubai's reputation for this scene traces back to its boom as a global hub in the 2000s, attracting jet-setters who demand premium, confidential services. Today, amid the humid evenings and year-round 30°C warmth, <strong>erotic massage in Dubai</strong> thrives in licensed parlors emphasizing consent and luxury. Whether you're a business traveler in DIFC or a vacationer at Palm Jumeirah, these experiences promise relaxation laced with erotic tension, all while navigating the city's expat-driven, multilingual vibe where English and Arabic mingle seamlessly.</p><p>From full-body Nuru slips to prostate-focused delights, Dubai's offerings are tailored for discernment. Safety and privacy reign supreme, with venues vetting clients and adhering to UAE's nuanced regulations. Dive into this unique world where the Arabian Gulf's breeze enhances every caress, making <strong>erotic massage Dubai</strong> an essential thrill for the adventurous.</p>
+
+<h2>About Dubai</h2>
+<p>Dubai dazzles as the UAE's crown jewel, blending Islamic culture with extravagant tourism. Home to the world's tallest building, Burj Khalifa, and man-made wonders like Palm Jumeirah, it draws 17 million visitors yearly. The city's year-round sunshine, averaging 35°C summers, pairs with air-conditioned malls like Mall of the Emirates for skiing in the desert heat.</p><p>Cultural landmarks such as the historic Al Fahidi District showcase wind-tower architecture and gold souks, while nightlife pulses in spots like White Dubai club atop Meydan Racecourse. Multilingual expats from 200 nationalities create a cosmopolitan pulse, with Arabic as the official language but English dominating luxury scenes. Dubai's tax-free allure fuels endless brunches and yacht parties, setting the stage for indulgent pursuits.</p><p>From dune bashing in the Empty Quarter to high-stakes shopping, Dubai embodies excess, making it the perfect backdrop for sensual explorations.</p>
+
+<h2>What to Expect</h2>
+<p>In <strong>erotic massage Dubai</strong> venues, anticipate a luxurious welcome with chilled Arabic coffee or dates, leading to dimly lit rooms scented with frankincense. Sessions last 60-120 minutes, featuring skilled hands gliding over sun-kissed skin with warmed coconut or argan oils. Expect sensual builds from feather-light teases to intense, full-body contact, always prioritizing mutual comfort in Dubai's respectful ethos.</p><p>Prices range from 500-1500 AED (about $136-$408 USD), varying by venue prestige and extras like tantric edges or couples options. Tipping 100-200 AED shows appreciation. Etiquette demands punctuality, cleanliness, and discretion—no photos, phones on silent. Communicate boundaries clearly in English, as therapists are pros at reading cues amid the city's multicultural clientele.</p><p>Post-massage, unwind with mint tea, feeling rejuvenated against Dubai's neon skyline. All spots enforce hygiene protocols suited to the hot climate.</p>`;
+const bottomHtml = `<p>Ready to surrender to ecstasy? Our directory spotlights exactly <strong>2 verified listings</strong> for <strong>erotic massage in Dubai</strong>, each vetted for authenticity, luxury, and client bliss. From Marina views to discreet Deira hideaways, these gems deliver the UAE's finest sensual artistry amid eternal sunshine and opulent vibes.</p><p>Don't miss this Arabian indulgence—book your session today and let Dubai's erotic pulse ignite your desires. Whether escaping boardroom stress in DIFC or extending a beach holiday, these experiences redefine pleasure in the desert metropolis.</p><p><strong>Reserve now</strong> through our trusted platforms for seamless access, VIP perks, and total privacy. Transform your Dubai trip into a legend of tactile rapture—your sensual awakening awaits!</p>`;
+
+// Split listings for different sections
+const premiumListings = listings.filter((l: any) => l.is_premium);
+const goldListings = listings.filter((l: any) => l.is_gold);
+const regularListings = listings.filter((l: any) => !l.is_premium);
+
+// Get top 5 listings for hero slider (Gold first, then Premium)
+const heroListings = [...goldListings, ...premiumListings.filter((l: any) => !l.is_gold), ...regularListings]
+    .filter((l: any) => l.thumbnail)
+    .slice(0, 5);
+---
+
+<Base 
+    title="Best Erotic Massage in Dubai | Top 2026 Guide"
+    description="Discover the ultimate erotic massage in Dubai at 2 verified venues. Indulge in sensual bliss amid Dubai&#039;s luxury skyline. Book now for an unforgettable experience in the UAE&#039;s premier adult oasis!"
+    canonical={canonicalUrl}
+    image={heroListings.length > 0 ? heroListings[0].thumbnail : 'https://erotikmaps.com/images/og-default.jpg'}
+>
+    <!-- Hero Section with Image Slider -->
+    <section class="hero">
+        {heroListings.length > 1 ? (
+            <div class="hero-slider" id="heroSlider">
+                {heroListings.map((listing: any, index: number) => (
+                    <div class={`hero-slide ${index === 0 ? 'active' : ''}`} style={`background-image: url('${listing.thumbnail}')`}>
+                        <div class="slide-overlay"></div>
+                        <a href={`/${listing.slug}`} class="slide-link" title={listing.name}>
+                            {listing.is_gold && <span class="slide-badge gold">⭐ Gold</span>}
+                            {listing.is_premium && !listing.is_gold && <span class="slide-badge premium">Premium</span>}
+                            <span class="slide-name">{listing.name}</span>
+                        </a>
+                    </div>
+                ))}
+                <div class="slider-dots">
+                    {heroListings.map((_: any, index: number) => (
+                        <button class={`dot ${index === 0 ? 'active' : ''}`} onclick={`goToSlide(${index})`}></button>
+                    ))}
+                </div>
+            </div>
+        ) : (
+            <div class="hero-static"></div>
+        )}
+        <div class="hero-content">
+            <div class="container">
+                <h1>Unveil Sensual Secrets: Premier Erotic Massage in Dubai</h1>
+                <p class="hero-subtitle">Discover {listings.length} verified Erotic massage venues in Dubai</p>
+                <div class="hero-stats">
+                    <span class="stat"><strong>{listings.length}</strong> Total Listings</span>
+                    <span class="stat"><strong>{goldListings.length}</strong> Gold Venues</span>
+                    <span class="stat"><strong>{premiumListings.length}</strong> Premium Venues</span>
+                </div>
+                <a href="#all-listings" class="hero-cta">Browse All Listings →</a>
+            </div>
+        </div>
+    </section>
+    
+    <script is:inline>
+    // Simple hero slider
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.slider-dots .dot');
+    
+    function goToSlide(index) {
+        slides[currentSlide]?.classList.remove('active');
+        dots[currentSlide]?.classList.remove('active');
+        currentSlide = index;
+        slides[currentSlide]?.classList.add('active');
+        dots[currentSlide]?.classList.add('active');
+    }
+    
+    // Auto-advance every 5 seconds
+    if (slides.length > 1) {
+        setInterval(() => {
+            goToSlide((currentSlide + 1) % slides.length);
+        }, 5000);
+    }
+    </script>
+    
+    <!-- Quick Navigation -->
+    <nav class="quick-nav">
+        <div class="container">
+            <a href="#premium">Premium Listings</a>
+            <a href="#all-listings">All Listings</a>
+            <a href="#about">About Dubai</a>
+            <a href="#faq">FAQ</a>
+        </div>
+    </nav>
+    
+    <!-- Intro Section -->
+    <section class="intro" id="about">
+        <div class="container">
+            <h2>About Erotic massage in Dubai</h2>
+            <div class="intro-content" set:html={introHtml} />
+        </div>
+    </section>
+    
+    <!-- Category Navigation - Browse by massage type -->
+    <CategoryNav city="Dubai" />
+    
+    <!-- Premium Listings (if any) -->
+    {premiumListings.length > 0 && (
+        <section class="listings premium-section" id="premium">
+            <div class="container">
+                <h2>⭐ Premium Erotic massage in Dubai</h2>
+                <p class="section-intro">Our highest-rated and most popular venues, handpicked for quality.</p>
+                <div class="listings-grid">
+                    {premiumListings.map((listing: any) => (
+                        <ListingCard listing={listing} />
+                    ))}
+                </div>
+            </div>
+        </section>
+    )}
+    
+    <!-- All Listings Grid -->
+    <section class="listings" id="all-listings">
+        <div class="container">
+            <h2>All Erotic massage Venues in Dubai</h2>
+            <p class="section-intro">Browse our complete directory of {listings.length} verified venues.</p>
+            <div class="listings-grid">
+                {listings.map((listing: any) => (
+                    <ListingCard listing={listing} />
+                ))}
+            </div>
+            
+            {listings.length === 0 && (
+                <p class="no-listings">No listings found. Check back soon!</p>
+            )}
+        </div>
+    </section>
+    
+    <!-- Network Links - Links to other satellite sites -->
+    <NetworkLinks currentCity="Dubai" currentCountry="United Arab Emirates" category="erotic-massage" />
+    
+    <!-- Internal Links Section -->
+    <InternalLinks city="Dubai" country="United Arab Emirates" category="Erotic massage" />
+    
+    <!-- Owner CTA Section - Encourage venue owners to create listings -->
+    <OwnerCTA city="Dubai" country="United Arab Emirates" category="Erotic massage" />
+    
+    <!-- FAQ Section -->
+    {faq && faq.length > 0 && (
+        <section class="faq" id="faq">
+            <div class="container">
+                <h2>Frequently Asked Questions about Erotic massage in Dubai</h2>
+                <div class="faq-list">
+                    {faq.map((item: any, index: number) => (
+                        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                            <h3 itemprop="name">{item.question}</h3>
+                            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                                <p itemprop="text">{item.answer}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    )}
+    
+    <!-- Bottom Section / Call to Action -->
+    <section class="bottom-content">
+        <div class="container">
+            <h2>Find Your Perfect Erotic massage Experience in Dubai</h2>
+            <div class="bottom-content-text" set:html={bottomHtml} />
+            
+            <div class="cta-box">
+                <h3>Looking for something specific?</h3>
+                <p>Browse through our {listings.length} listings above, or click on any venue to see full details, photos, and contact information.</p>
+                <a href="#all-listings" class="btn-primary">Browse All Listings</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Individual Listing Links for SEO -->
+    <section class="sitemap-links">
+        <div class="container">
+            <h2>All Erotic massage Venues</h2>
+            <ul class="venue-links">
+                {listings.map((listing: any) => (
+                    <li><a href={`/${listing.slug}`}>{listing.name} - Dubai</a></li>
+                ))}
+            </ul>
+        </div>
+    </section>
+    
+    <!-- Schema.org - ItemList -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Best Erotic Massage in Dubai | Top 2026 Guide",
+        "description": "Discover the ultimate erotic massage in Dubai at 2 verified venues. Indulge in sensual bliss amid Dubai&#039;s luxury skyline. Book now for an unforgettable experience in the UAE&#039;s premier adult oasis!",
+        "url": canonicalUrl,
+        "numberOfItems": listings.length,
+        "itemListElement": listings.map((listing: any, index: number) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+                "@type": "LocalBusiness",
+                "name": listing.name,
+                "url": `https://dubaieroticmassage.vip/${listing.slug}`,
+                "image": listing.thumbnail,
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Dubai",
+                    "addressCountry": "United Arab Emirates"
+                }
+            }
+        }))
+    })}></script>
+    
+    <!-- Schema.org - FAQPage -->
+    {faq && faq.length > 0 && (
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faq.map((item: any) => ({
+                "@type": "Question",
+                "name": item.question,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": item.answer
+                }
+            }))
+        })}></script>
+    )}
+    
+    <!-- Schema.org - WebPage -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Best Erotic Massage in Dubai | Top 2026 Guide",
+        "description": "Discover the ultimate erotic massage in Dubai at 2 verified venues. Indulge in sensual bliss amid Dubai&#039;s luxury skyline. Book now for an unforgettable experience in the UAE&#039;s premier adult oasis!",
+        "url": canonicalUrl,
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Dubai Erotic Massage 🌍",
+            "url": "https://dubaieroticmassage.vip"
+        },
+        "about": {
+            "@type": "Thing",
+            "name": "Erotic massage in Dubai"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://dubaieroticmassage.vip"
+                }
+            ]
+        }
+    })}></script>
+</Base>
+
+<style>
+    .quick-nav {
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 15px 0;
+        position: sticky;
+        top: 60px;
+        z-index: 90;
+    }
+    .quick-nav .container {
+        display: flex;
+        gap: 25px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .quick-nav a {
+        color: var(--text);
+        font-weight: 500;
+        font-size: 14px;
+    }
+    .quick-nav a:hover {
+        color: var(--primary);
+    }
+    .hero-stats {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .hero-stats .stat {
+        background: rgba(255,255,255,0.15);
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+    .section-intro {
+        color: var(--text-light);
+        margin-bottom: 25px;
+    }
+    .premium-section {
+        background: linear-gradient(135deg, #D4AF3710, #F4D03F10);
+    }
+    .cta-box {
+        background: linear-gradient(135deg, var(--primary)10, var(--secondary)10);
+        padding: 30px;
+        border-radius: 12px;
+        margin-top: 30px;
+        text-align: center;
+    }
+    .cta-box h3 {
+        margin-bottom: 10px;
+    }
+    .cta-box p {
+        margin-bottom: 20px;
+        color: var(--text-light);
+    }
+    .sitemap-links {
+        padding: 40px 0;
+        background: var(--bg);
+    }
+    .sitemap-links h2 {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+    .venue-links {
+        column-count: 3;
+        column-gap: 30px;
+        list-style: none;
+        padding: 0;
+    }
+    .venue-links li {
+        margin-bottom: 8px;
+        break-inside: avoid;
+    }
+    .venue-links a {
+        font-size: 13px;
+        color: var(--text-light);
+    }
+    .venue-links a:hover {
+        color: var(--primary);
+    }
+    @media (max-width: 768px) {
+        .venue-links {
+            column-count: 1;
+        }
+    }
+</style>

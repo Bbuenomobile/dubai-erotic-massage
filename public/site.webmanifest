@@ -1,0 +1,16 @@
+{
+    "name": "Dubai Erotic massage",
+    "short_name": "Dubai Erotic Massage \ud83c\udf0d",
+    "description": "Discover the ultimate erotic massage in Dubai at 2 verified venues. Indulge in sensual bliss amid Dubai's luxury skyline. Book now for an unforgettable experience in the UAE's premier adult oasis!",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#e91e63",
+    "icons": [
+        {
+            "src": "/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}
