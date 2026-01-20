@@ -742,6 +742,23 @@ img {
     gap: 8px;
 }
 
+/* Flag - Small inline flag */
+.listing-header .flag {
+    width: 24px;
+    height: 16px;
+    border-radius: 3px;
+    object-fit: cover;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    vertical-align: middle;
+}
+
+/* Listing position text */
+.listing-position {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 8px;
+}
+
 .listing-content {
     display: grid;
     grid-template-columns: 1fr 380px;
@@ -860,8 +877,8 @@ img {
 }
 
 .wa-icon {
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     flex-shrink: 0;
 }
 

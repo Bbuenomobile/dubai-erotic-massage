@@ -71,107 +71,22 @@ const heroListings = [...goldListings, ...premiumListings.filter((l: any) => !l.
     canonical={canonicalUrl}
     image={heroListings.length > 0 ? heroListings[0].thumbnail : 'https://erotikmaps.com/images/og-default.jpg'}
 >
-    <!-- Hero Section with Image Slider -->
-    <section class="hero">
-        {heroListings.length > 1 ? (
-            <div class="hero-slider" id="heroSlider">
-                {heroListings.map((listing: any, index: number) => (
-                    <div class={`hero-slide ${index === 0 ? 'active' : ''}`} style={`background-image: url('${listing.thumbnail}')`}>
-                        <div class="slide-overlay"></div>
-                        <a href={`/${listing.slug}`} class="slide-link" title={listing.name}>
-                            {listing.is_gold && <span class="slide-badge gold">⭐ Gold</span>}
-                            {listing.is_premium && !listing.is_gold && <span class="slide-badge premium">Premium</span>}
-                            <span class="slide-name">{listing.name}</span>
-                        </a>
-                    </div>
-                ))}
-                <div class="slider-dots">
-                    {heroListings.map((_: any, index: number) => (
-                        <button class={`dot ${index === 0 ? 'active' : ''}`} onclick={`goToSlide(${index})`}></button>
-                    ))}
-                </div>
-            </div>
-        ) : (
-            <div class="hero-static"></div>
-        )}
-        <div class="hero-content">
-            <div class="container">
-                <h1>Unveil Sensual Secrets: Premier Erotic Massage in Dubai</h1>
-                <p class="hero-subtitle">Discover {listings.length} verified Erotic massage venues in Dubai</p>
-                <div class="hero-stats">
-                    <span class="stat"><strong>{listings.length}</strong> Total Listings</span>
-                    <span class="stat"><strong>{goldListings.length}</strong> Gold Venues</span>
-                    <span class="stat"><strong>{premiumListings.length}</strong> Premium Venues</span>
-                </div>
-                <a href="#all-listings" class="hero-cta">Browse All Listings →</a>
+    <!-- Compact Hero Section -->
+    <section class="hero-compact">
+        <div class="container">
+            <h1>Unveil Sensual Secrets: Premier Erotic Massage in Dubai</h1>
+            <p class="hero-subtitle">{listings.length} verified venues in Dubai</p>
+            <div class="hero-badges">
+                {goldListings.length > 0 && <span class="badge-stat gold">⭐ {goldListings.length} Gold</span>}
+                {premiumListings.length > 0 && <span class="badge-stat premium">✨ {premiumListings.length} Premium</span>}
             </div>
         </div>
     </section>
     
-    <script is:inline>
-    // Simple hero slider
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.hero-slide');
-    const dots = document.querySelectorAll('.slider-dots .dot');
-    
-    function goToSlide(index) {
-        slides[currentSlide]?.classList.remove('active');
-        dots[currentSlide]?.classList.remove('active');
-        currentSlide = index;
-        slides[currentSlide]?.classList.add('active');
-        dots[currentSlide]?.classList.add('active');
-    }
-    
-    // Auto-advance every 5 seconds
-    if (slides.length > 1) {
-        setInterval(() => {
-            goToSlide((currentSlide + 1) % slides.length);
-        }, 5000);
-    }
-    </script>
-    
-    <!-- Quick Navigation -->
-    <nav class="quick-nav">
-        <div class="container">
-            <a href="#premium">Premium Listings</a>
-            <a href="#all-listings">All Listings</a>
-            <a href="#about">About Dubai</a>
-            <a href="#faq">FAQ</a>
-        </div>
-    </nav>
-    
-    <!-- Intro Section -->
-    <section class="intro" id="about">
-        <div class="container">
-            <h2>About Erotic massage in Dubai</h2>
-            <div class="intro-content" set:html={introHtml} />
-        </div>
-    </section>
-    
-    <!-- Category Navigation - Browse by massage type -->
-    <CategoryNav city="Dubai" />
-    
-    <!-- Premium Listings (if any) -->
-    {premiumListings.length > 0 && (
-        <section class="listings premium-section" id="premium">
-            <div class="container">
-                <h2>⭐ Premium Erotic massage in Dubai</h2>
-                <p class="section-intro">Our highest-rated and most popular venues, handpicked for quality.</p>
-                <div class="listings-grid">
-                    {premiumListings.map((listing: any) => (
-                        <ListingCard listing={listing} />
-                    ))}
-                </div>
-            </div>
-        </section>
-    )}
-    
-    <!-- All Listings Grid -->
+    <!-- Listings Grid - Mobile First -->
     <section class="listings" id="all-listings">
         <div class="container">
-            <h2>All Erotic massage Venues in Dubai</h2>
-            <p class="section-intro">Browse our complete directory of {listings.length} verified venues.</p>
-            <div class="listings-grid">
+            <div class="listings-grid-3">
                 {listings.map((listing: any) => (
                     <ListingCard listing={listing} />
                 ))}
@@ -182,6 +97,17 @@ const heroListings = [...goldListings, ...premiumListings.filter((l: any) => !l.
             )}
         </div>
     </section>
+    
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2>About Erotic massage in Dubai</h2>
+            <div class="about-content" set:html={introHtml} />
+        </div>
+    </section>
+    
+    <!-- Category Navigation -->
+    <CategoryNav city="Dubai" />
     
     <!-- Network Links - Links to other satellite sites -->
     <NetworkLinks currentCity="Dubai" currentCountry="United Arab Emirates" category="erotic-massage" />
@@ -309,40 +235,72 @@ const heroListings = [...goldListings, ...premiumListings.filter((l: any) => !l.
 </Base>
 
 <style>
-    .quick-nav {
-        background: var(--card-bg);
-        border-bottom: 1px solid var(--border);
-        padding: 15px 0;
-        position: sticky;
-        top: 60px;
-        z-index: 90;
+    /* Compact Hero */
+    .hero-compact {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 30px 0;
+        text-align: center;
     }
-    .quick-nav .container {
+    .hero-compact h1 {
+        font-size: clamp(1.4rem, 4vw, 2rem);
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+    .hero-compact .hero-subtitle {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        margin-bottom: 12px;
+    }
+    .hero-badges {
         display: flex;
-        gap: 25px;
+        gap: 10px;
         justify-content: center;
         flex-wrap: wrap;
     }
-    .quick-nav a {
-        color: var(--text);
-        font-weight: 500;
-        font-size: 14px;
+    .badge-stat {
+        background: rgba(255,255,255,0.2);
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
     }
-    .quick-nav a:hover {
-        color: var(--primary);
+    .badge-stat.gold { background: rgba(255,215,0,0.3); }
+    .badge-stat.premium { background: rgba(255,255,255,0.25); }
+    
+    /* Listings Grid - Mobile First (1 col mobile, 2 tablet, 3 desktop) */
+    .listings-grid-3 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
     }
-    .hero-stats {
-        display: flex;
-        gap: 30px;
-        justify-content: center;
-        margin-top: 20px;
+    @media (min-width: 540px) {
+        .listings-grid-3 { grid-template-columns: repeat(2, 1fr); }
     }
-    .hero-stats .stat {
-        background: rgba(255,255,255,0.15);
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 14px;
+    @media (min-width: 900px) {
+        .listings-grid-3 { grid-template-columns: repeat(3, 1fr); }
     }
+    
+    /* About Section */
+    .about-section {
+        background: var(--card-bg);
+        padding: 40px 0;
+    }
+    .about-section h2 {
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+    }
+    .about-content {
+        color: var(--text-light);
+        line-height: 1.7;
+    }
+    .about-content p { margin-bottom: 12px; }
+    
+    /* Listings Section */
+    .listings {
+        padding: 24px 0;
+    }
+    
     .section-intro {
         color: var(--text-light);
         margin-bottom: 25px;
